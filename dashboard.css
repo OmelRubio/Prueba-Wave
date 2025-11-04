@@ -1,0 +1,338 @@
+/* --- VARIABLES DE COLOR --- */
+:root {
+    --color-fondo: #f5f7fb;
+    --color-sidebar: #ffffff;
+    --color-texto: #333;
+    --color-acento: #2e7ef1;
+    --color-borde: #ddd;
+    --color-hover: #e8f0ff;
+}
+
+body.dark-mode {
+    --color-fondo: #333;
+    --color-sidebar: #1f1f1f;
+    --color-texto: #e0e0e0;
+    --color-acento: #2e7ef1;
+    --color-borde: #333;
+    --color-hover: #2a2a2a;
+}
+
+/* --- RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+*, *::before, *::after {
+    transition: background-color 0.25s ease, color 0.25s ease,
+                border-color 0.25s ease, box-shadow 0.25s ease,
+                fill 0.25s ease, stroke 0.25s ease;
+}
+
+body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- DASHBOARD --- */
+.dashboard {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    background: var(--color-sidebar);
+    width: 250px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-borde);
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 90px;
+    overflow-x: hidden;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.logo {
+    width: 200px; /* Tamaño ajustado */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.sidebar.collapsed .logo {
+    transform: translateX(-15px);
+}
+
+.menu {
+    list-style: none;
+    margin-bottom: auto; /* Empuja el modo oscuro al fondo */
+}
+
+.menu li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    color: var(--color-texto);
+    transition: background 0.2s;
+    font-size: 1.1rem;
+}
+
+.menu li:hover {
+    background: var(--color-hover);
+}
+
+.menu li i {
+    font-size: 1.2rem;
+    width: 1.5rem; /* ancho fijo para evitar desplazamientos */
+    text-align: center;
+    margin-right: 0.5rem; /* Espaciado consistente */
+}
+
+/* Mantener espacio reservado para el texto y ocultarlo sin causar reflows bruscos */
+.menu li span {
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px; /* espacio máximo para el texto en estado expandido */
+    transition: max-width 0.25s ease, opacity 0.25s ease;
+    opacity: 1;
+}
+
+.sidebar.collapsed .menu li span {
+    /* en collapsed no eliminamos el elemento del flujo, solo lo escondemos visualmente */
+    max-width: 0;
+    opacity: 0;
+}
+
+/* --- MODO OSCURO TOGGLE --- */
+.modo-oscuro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem; /* Texto más grande */
+    color: var(--color-texto);
+    margin-top: auto; /* Se pega al fondo */
+    padding: 1rem 0.5rem; /* Padding adicional */
+}
+
+.modo-oscuro.collapsed{
+    flex-direction: column;
+}
+
+.modo-oscuro #Con-texto{
+    display: inline;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch.volteado{
+    transform: rotate(90deg);
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked+.slider {
+    background-color: var(--color-acento);
+}
+
+input:checked+.slider::before {
+    transform: translateX(20px);
+}
+
+/* --- TOPBAR --- */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--color-borde);
+    background: var(--color-sidebar);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar h2 {
+    color: var(--color-acento);
+}
+
+.acciones {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.buscador {
+    display: flex;
+    border: 1px solid var(--color-borde);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.buscador input {
+    border: none;
+    outline: none;
+    padding: 0.4rem 0.8rem;
+    background: none;
+    color: var(--color-texto);
+}
+
+.buscador button {
+    border: none;
+    background: none;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    color: var(--color-texto);
+}
+
+.campana {
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.usuario img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ccc;
+}
+
+.nombre {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.rol {
+    font-size: 0.8rem;
+    color: gray;
+}
+
+/* --- CONTENIDO PRINCIPAL --- */
+.contenido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-fondo);
+}
+
+.seccion{
+    margin-left: 5%;
+    height: 100%;
+}
+
+#Filtro{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.199);
+    z-index: 1000; /* por debajo del modal que usa 1100 */
+    position: fixed; /* cubrir siempre la ventana */
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+#Tabla-acciones{
+    width: 10%;
+}
+
+#acciones{
+    display: flex;
+    gap: 10px;
+}
+
+.eliminar{
+padding: 6px 12px;
+background-color: rgb(247, 68, 68);
+border: none;
+color: white;
+border-radius: 9px;
+cursor: pointer;
+}
+
+.modificar{
+padding: 6px 12px;
+background-color: #007bff;
+border: none;
+color: white;
+border-radius: 9px;
+cursor: pointer;
+}
+
+#labelId{
+    display: none;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .contenido {
+        flex: 1;
+        overflow-y: auto;
+    }
+}

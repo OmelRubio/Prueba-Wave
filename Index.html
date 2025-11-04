@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Principal - Pro Stock Tool</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="Bodega.css">
+    <script defer src="dashboard.js"></script>
+    <script defer src="Nav.js"></script>
+    <script defer src="Bodega.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const params = new URLSearchParams(window.location.search);
+    const exito = params.get("Exito");
+
+    if (exito === "1" || exito === "0") {
+        const alerta = document.createElement("div");
+        alerta.classList.add("alerta-registro");
+
+        if (exito === "1") {
+            alerta.textContent = "Se registro la bodega exitosamente";
+            alerta.style.backgroundColor = "#007bff";
+        } else {
+            alerta.textContent = "Error al registrar bodega. Intente nuevamente";
+            alerta.style.backgroundColor = "rgba(231, 76, 60, 0.95)";
+        }
+
+        document.body.appendChild(alerta);
+
+        setTimeout(() => alerta.classList.add("visible"), 50);
+
+        setTimeout(() => {
+            alerta.classList.remove("visible");
+            setTimeout(() => alerta.remove(), 3000); 
+        }, 1300);
+
+
+        const newUrl = window.location.href.split("?")[0];
+        window.history.replaceState({}, document.title, newUrl);
+    }
+});
+</script>
+</head>
+
+<body>
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="Pro-Stock-Sinfondo.png" alt="Logo Pro Stock" class="logo" id="toggle-sidebar">
+            </div>
+
+            <ul class="menu">
+                <li id="Panel"><i class="fa-solid fa-house"></i><span>Panel Principal</span></li>
+                <li id="Productos"><i class="fa-solid fa-box"></i><span>Productos</span></li>
+                <li id="Gestionar"><i class="fa-solid fa-gear"></i><span>Gestionar</span></li>
+                <li id="Categorías"><i class="fa-solid fa-tags"></i><span>Categorías</span></li>
+                <li id="Parametros"><i class="fa-solid fa-sliders"></i><span>Parámetros</span></li>
+                <li id="Proveedores"><i class="fa-solid fa-truck"></i><span>Proveedores</span></li>
+                <li id="Movimientos"><i class="fa-solid fa-right-left"></i><span>Movimientos</span></li>
+                <li id="Reportes"><i class="fa-solid fa-chart-bar"></i><span>Reportes</span></li>
+            </ul>
+
+            <div class="modo-oscuro">
+                <i class="fa-solid fa-moon" id="icon-oscuro"></i>
+                <span id="Con-texto">Modo Oscuro</span>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-dark-mode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </aside>
+
+        <main class="contenido">
+            <header class="topbar">
+                <h2>Panel Principal</h2>
+
+                <div class="acciones">
+                    <div class="buscador">
+                        <input type="text" placeholder="Busca un producto">
+                        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+
+                    <i class="fa-regular fa-bell campana"></i>
+
+                    <div class="usuario">
+                        <img src="gato-usuario.jfif" alt="Usuario" class="avatar">
+                        <div>
+                            <span class="nombre">Gatosh</span><br>
+                            <span class="rol">Administrador</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENIDO DE LA SECCIÓN BODEGA -->
+            <section class="bodega-section seccion">
+                <div class="bodega-header">
+                    <div class="info-box bodega-box">
+                        <h2>Bodega</h2>
+                        <p>Estamos pensando en una descripción</p>
+                    </div>
+                    <div class="info-box concepto-box">
+                        <h2>Concepto de inventario</h2>
+                        <p>Estamos pensando en una descripción</p>
+                    </div>
+                </div>
+
+                <div class="bodega-controls">
+                    <div class="busqueda">
+                        <input type="text" placeholder="Buscar producto..." />
+                        <select>
+                            <option value="">Filtrar...</option>
+                        </select>
+                    </div>
+                    <button id="btnCrear" class="btn-crear"><i class="fa-solid fa-plus"></i> Crear bodega</button>
+                </div>
+
+                <!-- FORMULARIO OCULTO -->
+                <div id="modalBodega" class="modal">
+                    <div class="modal-content">
+                        <h3 class="tituloForm">Nueva Bodega</h3>
+                        <form action="/Proyecto-2/php/Bodega.php" method="POST" id="Form-bodega">
+
+                            <label for="bodegaId" id="labelId">ID</label>
+                            <input type="number" id="bodegaId" name="bodegaId">
+
+                            <label for="nombre">Nombre de la Bodega*</label>
+                            <input type="text" id="nombre" name="nombre" required />
+
+                            <label for="descripcion">Descripción*</label>
+                            <textarea id="descripcion" name="descripcion" rows="3" required></textarea>
+
+                            <div class="modal-buttons">
+                                <button type="button" id="cancelar" class="btn-cancelar">Cancelar</button>
+                                <button type="submit" class="btn-guardar" id="botonCrear">Crear Bodega</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="tabla-bodega">
+                    <table id="tabla-bodega">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Número</th>
+                                <th>Descripción</th>
+                                <th id="Tabla-acciones">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<div id="Filtro"></div>
+</body>
+</html>
